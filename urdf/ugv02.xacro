@@ -41,7 +41,7 @@
   <xacro:property name="fender_side_width" value="${wheel_radius + fender_thickness + fender_top_gap}"/>
 
   <xacro:property name="fender_side_y_offset" value="${0.5 * (fender_top_width + fender_thickness)}"/>
-  <xacro:property name="fender_side_z_offset" value="${0.5 * (fender_thickness - fender_side_width)}"/> --> -->
+  <xacro:property name="fender_side_z_offset" value="${0.5 * (fender_thickness - fender_side_width)}"/> --> 
 
   <xacro:property name="wheel_axle_z_offset" value="${wheel_radius - 0.5 * body_height - ground_clearance}"/>
 
@@ -96,8 +96,6 @@
     size_y="${body_width}"
     size_z="${body_height}"
   />
-
-
 
   <xacro:joint_fixed
     parent="body"

@@ -7,53 +7,141 @@
 -->
 
 <robot name="rosbot3" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="$(find rosbot3_description)/urdf/ugv02.xacro"/>
+  <xacro:include filename="$(find rosbot3_description)/urdf/ugv02.xacro" />
 
-  <xacro:property name="payload_base_length" value="${130 * M}"/>
-  <xacro:property name="payload_base_width" value="${130 * M}"/>
-  <xacro:property name="payload_base_height" value="${38 * M}"/>
+  <xacro:property name="payload_base_length" value="${130 * M}" />
+  <xacro:property name="payload_base_width" value="${130 * M}" />
+  <xacro:property name="payload_base_height" value="${38 * M}" />
 
-  <xacro:property name="lidar_side" value="${45.61 * M}"/>
-  <xacro:property name="lidar_height" value="${38 * M}"/>
+  <xacro:property name="camera_vertical_base_length" value="${20 * M}" />
+  <xacro:property name="camera_vertical_base_width" value="${3 * M}" />
+  <xacro:property name="camera_vertical_base_height" value="${94 * M}" />
+
+  <xacro:property name="camera_horizontal_base_length" value="${35 * M}" />
+  <xacro:property name="camera_horizontal_base_width" value="${3 * M}" />
+  <xacro:property name="camera_horizontal_base_height" value="${20 * M}" />
+
+  <xacro:property name="camera_length" value="${20 * M}" />
+  <xacro:property name="camera_width" value="${80 * M}" />
+  <xacro:property name="camera_height" value="${30 * M}" />
+
+
+  <xacro:property name="lidar_radius" value="${50 * M}" />
+  <xacro:property name="lidar_height" value="${38 * M}" />
+
+  <xacro:property name="antenna_radius" value="${5 * M}" />
+  <xacro:property name="antenna_height" value="${80 * M}" />
 
   <xacro:solid_block
-    name="payload_base"
-    size_x="${payload_base_length}"
-    size_y="${payload_base_width}"
-    size_z="${payload_base_height}"
+    name="camera_vertical_right_base"
+    size_x="${camera_vertical_base_length}"
+    size_y="${camera_vertical_base_width}"
+    size_z="${camera_vertical_base_height}"
+  />
+
+  <xacro:solid_block
+    name="camera_vertical_left_base"
+    size_x="${camera_vertical_base_length}"
+    size_y="${camera_vertical_base_width}"
+    size_z="${camera_vertical_base_height}"
   />
 
   <xacro:joint_fixed
     parent="body"
-    child="payload_base"
-    z="${0.5 * (body_height + payload_base_height)}"
+    child="camera_vertical_left_base"
+    x="${-0.3 * body_length}"
+    y="${0.2 * body_width}"
+    z="${0.5 * (body_height + camera_vertical_base_height)}"
   />
 
-  <xacro:camera_link name="camera_front"/>
   <xacro:joint_fixed
-    parent="payload_base"
-    child="camera_front"
-    x="${0.5 * payload_base_length}"
+    parent="body"
+    child="camera_vertical_right_base"
+    x="${-0.3 * body_length}"
+    y="${-0.2 * body_width}"
+    z="${0.5 * (body_height + camera_vertical_base_height)}"
   />
 
   <xacro:solid_block
-    name="lidar"
-    size_x="${lidar_side}"
-    size_y="${lidar_side}"
-    size_z="${lidar_height}"
+    name="camera_horizontal_left_base"
+    size_x="${camera_horizontal_base_length}"
+    size_y="${camera_horizontal_base_width}"
+    size_z="${camera_horizontal_base_height}"
+  />
+
+  <xacro:solid_block
+    name="camera_horizontal_right_base"
+    size_x="${camera_horizontal_base_length}"
+    size_y="${camera_horizontal_base_width}"
+    size_z="${camera_horizontal_base_height}"
   />
 
   <xacro:joint_fixed
-    parent="payload_base"
-    child="lidar"
-    x="${0.5 * payload_base_height}"
-    z="${0.5 * (payload_base_height + lidar_height)}"
+    parent="camera_vertical_left_base"
+    child="camera_horizontal_left_base"
+    x="${camera_vertical_base_length}"
+    z="${0.5 * (camera_vertical_base_height - camera_horizontal_base_height)}"
   />
 
-  <link name="laser"/>
+  <xacro:joint_fixed
+    parent="camera_vertical_right_base"
+    child="camera_horizontal_right_base"
+    x="${camera_vertical_base_length}"
+    z="${0.5 * (camera_vertical_base_height - camera_horizontal_base_height)}"
+  />
+
+  <xacro:solid_block
+    name="camera"
+    size_x="${camera_length}"
+    size_y="${camera_width}"
+    size_z="${camera_height}"
+  />
+
+  <xacro:joint_fixed
+    parent="camera_horizontal_right_base"
+    child="camera"
+    x="${0.5 * camera_length}"
+    y="${0.5*camera_width - 3.4 * M}"
+  />
+
+  <xacro:camera_link name="camera_front" />
+
+  <xacro:joint_fixed
+    parent="camera"
+    child="camera_front"
+    x="${0.5 * camera_length}"
+  />
+
+  <xacro:solid_cylinder
+    name="lidar"
+    length="${lidar_height}"
+    radius="${lidar_radius}"
+  />
+
+  <xacro:joint_fixed
+    parent="body"
+    child="lidar"
+    z="${0.5 * (body_height + lidar_height)}"
+  />
+
+  <link name="laser" />
   <xacro:joint_fixed
     parent="lidar"
     child="laser"
     z="${0.5 * lidar_height}"
+  />
+
+    <xacro:solid_cylinder
+    name="antenna"
+    length="${antenna_height}"
+    radius="${antenna_radius}"
+  />
+
+  <xacro:joint_fixed
+    parent="body"
+    child="antenna"
+    x="${-0.45 * body_length}"
+    y="${0.2 * body_width}"
+    z="${0.5 * (body_height + antenna_height)}"
   />
 </robot>

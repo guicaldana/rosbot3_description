@@ -19,7 +19,7 @@
   <xacro:property name="ground_clearance" value="${23 * M}"/>
   <xacro:property name="wheel_diameter" value="${84.0 * M}"/>
   <xacro:property name="wheel_radius" value="${0.5 * wheel_diameter}"/>
-  <xacro:property name="wheelbase" value="${106.0 * M"/>
+  <xacro:property name="wheelbase" value="${106.0 * M}"/>
 
   <!-- Value not defined. Random value put from image -->
   <xacro:property name="wheel_thickness" value="${25 * M}"/>
@@ -97,46 +97,7 @@
     size_z="${body_height}"
   />
 
-  <!-- <xacro:solid_block
-    name="fenders_top"
-    size_x="${fender_length}"
-    size_y="${fender_top_width}"
-    size_z="${fender_thickness}"
-  /> -->
 
-  <!-- <xacro:solid_block
-    name="fender_left"
-    size_x="${fender_length}"
-    size_y="${fender_thickness}"
-    size_z="${fender_side_width}"
-  />
-
-  <xacro:solid_block
-    name="fender_right"
-    size_x="${fender_length}"
-    size_y="${fender_thickness}"
-    size_z="${fender_side_width}"
-  /> -->
-
-  <!-- <xacro:joint_fixed
-    parent="body"
-    child="fenders_top"
-    z="${0.5 * (body_height - fender_thickness)}"
-  /> -->
-
-  <!-- <xacro:joint_fixed
-    parent="fenders_top"
-    child="fender_left"
-    y="${fender_side_y_offset}"
-    z="${fender_side_z_offset}"
-  />
-
-  <xacro:joint_fixed
-    parent="fenders_top"
-    child="fender_right"
-    y="${-fender_side_y_offset}"
-    z="${fender_side_z_offset}"
-  /> -->
 
   <xacro:joint_fixed
     parent="body"

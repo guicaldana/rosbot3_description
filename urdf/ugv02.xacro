@@ -7,44 +7,34 @@
 -->
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="$(find ros_commons)/urdf/domain.xacro"/>
+  <xacro:include filename="$(find ros_commons)/urdf/domain.xacro" />
 
-  <xacro:property name="M" value="0.001"/>
+  <xacro:property name="M" value="0.001" />
 
-  <xacro:property name="overall_height" value="${103 * M}"/>
-
+  <xacro:property name="overall_height" value="${103 * M}" />
 
 
   <!-- Using standard wheels values -->
-  <xacro:property name="ground_clearance" value="${23 * M}"/>
-  <xacro:property name="wheel_diameter" value="${84.0 * M}"/>
-  <xacro:property name="wheel_radius" value="${0.5 * wheel_diameter}"/>
-  <xacro:property name="wheelbase" value="${106.0 * M}"/>
+  <xacro:property name="ground_clearance" value="${23 * M}" />
+  <xacro:property name="wheel_diameter" value="${84.0 * M}" />
+  <xacro:property name="wheel_radius" value="${0.5 * wheel_diameter}" />
+  <xacro:property name="wheelbase" value="${106.0 * M}" />
 
   <!-- Value not defined. Random value put from image -->
-  <xacro:property name="wheel_thickness" value="${25 * M}"/>
+  <xacro:property name="wheel_thickness" value="${25 * M}" />
 
   <!-- Distance between intern part of both wheels in the same axe -->
-  <xacro:property name="wheel_separation" value="${233.0 * M - 2* wheel_thickness}"/>
-  
-  <xacro:property name="body_length" value="${200.0 * M}"/>
-  <xacro:property name="body_width" value="${233.0 * M - 2 * wheel_thickness}"/>
-  <xacro:property name="body_height" value="${103.0 * M - ground_clearance }"/>
+  <xacro:property name="wheel_separation" value="${233.0 * M - 2* wheel_thickness}" />
+
+  <xacro:property name="body_length" value="${200.0 * M}" />
+  <xacro:property name="body_width" value="${233.0 * M - 2 * wheel_thickness}" />
+  <xacro:property name="body_height" value="${103.0 * M - ground_clearance }" />
+
+  <xacro:property name="wheel_axle_z_offset"
+    value="${wheel_radius - 0.5 * body_height - ground_clearance}" />
 
 
-  <!-- <xacro:property name="fender_length" value="${200.0 * M}"/>
-  <xacro:property name="fender_thickness" value="${3.0 * M}"/>
-  <xacro:property name="fender_top_gap" value="${1.0 * M}"/>
-  <xacro:property name="fender_side_gap" value="${5.0 * M}"/>
-
-  <xacro:property name="fender_top_width" value="${body_width + 2.0 * (wheel_thickness * 0.75)}"/>
-  <xacro:property name="fender_side_width" value="${wheel_radius + fender_thickness + fender_top_gap}"/>
-
-  <xacro:property name="fender_side_y_offset" value="${0.5 * (fender_top_width + fender_thickness)}"/>
-  <xacro:property name="fender_side_z_offset" value="${0.5 * (fender_thickness - fender_side_width)}"/> --> 
-
-  <xacro:property name="wheel_axle_z_offset" value="${wheel_radius - 0.5 * body_height - ground_clearance}"/>
-
+  <!-- Using roselito's macro to generate the axles and wheels-->
   <xacro:macro
     name="wheels"
     params="position"
@@ -87,9 +77,11 @@
     />
   </xacro:macro>
 
-  <xacro:wheels position="front"/>
-  <xacro:wheels position="rear"/>
+  <!-- Generating wheels and axles-->
+  <xacro:wheels position="front" />
+  <xacro:wheels position="rear" />
 
+  <!-- Building the body structure-->
   <xacro:solid_block
     name="body"
     size_x="${body_length}"
@@ -97,6 +89,7 @@
     size_z="${body_height}"
   />
 
+  <!-- Joining the axles to the body-->
   <xacro:joint_fixed
     parent="body"
     child="wheel_front_axle"
@@ -111,7 +104,10 @@
     z="${wheel_axle_z_offset}"
   />
 
-  <link name="base_link"/>
+  <!-- Creating the base link-->
+  <link name="base_link" />
+
+  <!-- Joining the base link to the body-->
   <xacro:joint_fixed
     parent="base_link"
     child="body"

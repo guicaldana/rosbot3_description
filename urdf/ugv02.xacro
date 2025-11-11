@@ -30,6 +30,13 @@
   <xacro:property name="body_width" value="${233.0 * M - 2 * wheel_thickness}" />
   <xacro:property name="body_height" value="${103.0 * M - ground_clearance }" />
 
+  <!-- Value not defined. Random value put from image-->
+   <!-- Fender that covers the top view of the wheels -->
+  <xacro:property name="fender_length" value="${200.0 * M}" />
+  <xacro:property name="fender_width" value="${233.0 * M }" />
+  <xacro:property name="fender_height" value="${2 * M }" />
+  
+
   <xacro:property name="wheel_axle_z_offset"
     value="${wheel_radius - 0.5 * body_height - ground_clearance}" />
 
@@ -102,6 +109,20 @@
     child="wheel_rear_axle"
     x="${-0.5 * wheelbase}"
     z="${wheel_axle_z_offset}"
+  />
+
+   <!-- Building the fender structure-->
+  <xacro:solid_block
+    name="fender"
+    size_x="${fender_length}"
+    size_y="${fender_width}"
+    size_z="${fender_height}"
+  />
+
+    <xacro:joint_fixed
+    parent="body"
+    child="fender"
+    z="${0.5 * body_height }"
   />
 
   <!-- Creating the base link-->
